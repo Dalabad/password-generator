@@ -18,16 +18,16 @@
           <CheckboxRow label="Use numbers [0-9]" v-model="useNumbers" />
           <CheckboxRow label="Use Special Characters" v-model="useSpecialCharacters" />
           <CheckboxRow label="Avoid Ambiguous Characters" v-model="avoidAmbiguousCharacters" />
-          <RangeRow label="Password length" v-model.number="passwordLength" />
-          <SelectRow label="Amount of Passwords" values="1,5,10,25" v-model.number="passwordAmount" />
+          <RangeRow label="Password length" v-model.number="passwordLengthDefault" />
+          <SelectRow label="Amount of Passwords" :values="passwordAmountOptions" v-model.number="passwordAmountDefault" />
         </tbody>
       </table>
 
       <RegenerateButton @regenerate-passwords="updatePasswords" />
 
-      <div v-for="(password, index) in passwordAmount" :key="index">
+      <div v-for="(password, index) in passwordAmountDefault" :key="index">
         <PasswordOutput :useLetters="useLetters" :useNumbers="useNumbers" :useSpecialCharacters="useSpecialCharacters"
-          :avoidAmbiguousCharacters="avoidAmbiguousCharacters" :passwordLength="passwordLength"
+          :avoidAmbiguousCharacters="avoidAmbiguousCharacters" :passwordLength="passwordLengthDefault"
           :regeneratePassword="regeneratePassword" />
       </div>
 
@@ -48,14 +48,18 @@ import Footer from './components/Footer.vue'
 // Your reactive properties and methods
 import { ref, onMounted } from 'vue';
 
-const useLetters = ref(true);
-const useNumbers = ref(true);
-const useSpecialCharacters = ref(true);
-const avoidAmbiguousCharacters = ref(true);
-const passwordLength = ref(20);
-const passwordAmount = ref(5);
 const regeneratePassword = ref(null)
 
+// Set default values or retrieve from environment variables
+const passwordAmountDefault = ref(Number(import.meta.env.VITE_PASSWORD_AMOUNT_DEFAULT) || 5);
+const passwordAmountOptions = ref(import.meta.env.VITE_PASSWORD_AMOUNT_OPTIONS);
+const passwordLengthDefault = ref(Number(import.meta.env.VITE_PASSWORD_LENGTH_DEFAULT) || 20);
+const useLetters = ref(import.meta.env.VITE_USE_LETTERS === 'true');
+const useNumbers = ref(import.meta.env.VITE_USE_NUMBERS === 'true');
+const useSpecialCharacters = ref(import.meta.env.VITE_USE_SPECIAL_CHARACTERS === 'true');
+const avoidAmbiguousCharacters = ref(import.meta.env.VITE_AVOID_AMBIGUOUS_CHARACTERS === 'true');
+
+// Trigger the regeneration of all passwords
 function updatePasswords() {
   regeneratePassword.value = Date.now()
 }

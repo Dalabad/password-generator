@@ -8,8 +8,6 @@
 </template>
 
 <script setup>
-import { defineEmits } from 'vue';
-
 const emit = defineEmits();
 
 // Emit an event to regenerate passwords
