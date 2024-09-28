@@ -48,6 +48,8 @@ The project is prepared to be run as a docker container. To build the container 
 docker build . -t password-generator
 ```
 
+or pull the image from docker hub `sgtdalabad/password-generator`
+
 ## Configuration
 
 The following environment variables are used to configure the password generator's default settings:
@@ -75,5 +77,5 @@ docker run -d -P \
   -e VITE_USE_NUMBERS=true \
   -e VITE_USE_SPECIAL_CHARACTERS=true \
   -e VITE_AVOID_AMBIGUOUS_CHARACTERS=true \
-  password-generator:latest
+  sgtdalabad/password-generator:latest
 ```
